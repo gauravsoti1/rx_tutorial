@@ -1,0 +1,17 @@
+{
+  "name": "rx_tutorial",
+  "version": "1.0.0",
+  "description": "Practice from this link: https://www.youtube.com/watch?v=lkUrkNdczpI&list=PLj2oFNVaxfJ8nRFUA2CLyt8TymA0_vQux",
+  "main": "index.js",
+  "author": "Gaurav Sobti",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
+    "@babel/preset-typescript": "^7.14.5",
+    "@types/jest": "^26.0.24",
+    "babel-jest": "^27.0.6",
+    "jest": "^27.0.6",
+    "typescript": "^4.3.5"
+  }
+}
