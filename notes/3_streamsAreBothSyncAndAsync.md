@@ -1,0 +1,1 @@
+Just talked about rxjs can be both sync and async. Also, I felt that the example was bad. So ompting that.
