@@ -78,3 +78,62 @@ Nothing happens if we don't subscribe, interval doesn't run
 > Subject creates only 1 stream which gets shared between the subscriptions
 
 > Observables create new stream per subscription
+
+## Creating our own observable
+
+```typescript
+  const producer = new Observable((subscriber) => {
+    // separate scope for each subscriber
+    let i = 0;
+    subscriber.next(i++);
+    subscriber.next(i++);
+    subscriber.next(i++);
+  });
+
+  producer.subscribe((val) => console.log('sub 1', val, process.hrtime()));
+  producer.subscribe((val) => console.log('sub 2', val, process.hrtime()));
+
+```
+Output:
+```
+  sub 1 0 [ 8917, 863957386 ]
+  sub 1 1 [ 8917, 866037789 ]
+  sub 1 2 [ 8917, 866170280 ]
+  sub 2 0 [ 8917, 866464683 ]
+  sub 2 1 [ 8917, 866597585 ]
+  sub 2 2 [ 8917, 866699691 ]
+
+```
+Inferences:
+- We can see that sub1 and sub2 receive values starting from 0
+- If the context was shared between the consumers, first value of sub2 would have been 3
+
+### Our own interval operator:
+```typescript
+  new Observable(subscriber => {
+    let i = 0;
+    setInterval(()=> {
+      subscriber.next(i++)
+    }, 1000)
+  })
+
+```
+Problem in this code: We didn't clear our interval on unsubscribe and hence our code will keep running even when our subscriber is not receiving updates.
+> Always use rxJs operators because they are production ready tested code
+
+### Fixing clearInterval problem:
+
+```typescript
+  new Observable(subscriber => {
+    let i = 0;
+    const intervalId = setInterval(()=> {
+      subscriber.next(i++)
+    }, 1000)
+
+    return () => clearInterval(intervalId);
+  })
+```
+
+> subjects are eager, multi-cast
+
+> Observables are lazy, uni-cast
